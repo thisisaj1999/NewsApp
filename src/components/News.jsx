@@ -18,6 +18,7 @@ export class News extends Component {
       page: 1,
       country: param[0] === 'country' ? param[1] : 'in',
       category: param[0] === 'category' ? param[1] : false,
+      error: null,
     };
   }
 
@@ -25,13 +26,21 @@ export class News extends Component {
     let url = this.state.category
       ? `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=${this.apiKey}&pageSize=21&page=1`
       : `https://newsapi.org/v2/top-headlines?country=${this.state.country}&apiKey=${this.apiKey}&pageSize=21&page=1`;
+
     let data = await fetch(url);
-    let parsedData = await data.json();
-    console.log(url);
-    this.setState({
-      articles: parsedData.articles,
-      totalArticles: parsedData.totalResults,
-    });
+    let code = data.status;
+
+    if (code === 429) {
+      this.setState({
+        error: 'API Limit Exceeds',
+      });
+    } else {
+      let parsedData = await data.json();
+      this.setState({
+        articles: parsedData.articles,
+        totalArticles: parsedData.totalResults,
+      });
+    }
   }
 
   handleDropdownClick = () => {
@@ -50,11 +59,19 @@ export class News extends Component {
         }&apiKey=${this.apiKey}&pageSize=21&page=${this.state.page - 1}`;
 
     let data = await fetch(url);
-    let parsedData = await data.json();
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-    });
+    let code = data.status;
+
+    if (code === 429) {
+      this.setState({
+        error: 'API Limit Exceeds',
+      });
+    } else {
+      let parsedData = await data.json();
+      this.setState({
+        page: this.state.page - 1,
+        articles: parsedData.articles,
+      });
+    }
   };
 
   handleNextClick = async () => {
@@ -71,17 +88,25 @@ export class News extends Component {
           }&apiKey=${this.apiKey}&pageSize=21&page=${this.state.page + 1}`;
 
       let data = await fetch(url);
-      let parsedData = await data.json();
+      let code = data.status;
 
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedData.articles,
-      });
+      if (code === 429) {
+        this.setState({
+          error: 'API Limit Exceeds',
+        });
+      } else {
+        let parsedData = await data.json();
+        this.setState({
+          page: this.state.page + 1,
+          articles: parsedData.articles,
+        });
+      }
     }
   };
 
   render() {
-    return (
+    console.log(this.state.articles);
+    return this.state.articles.length > 0 ? (
       <div className="container mt-5 " id="myElement">
         <h2 className="pt-5">NewsMonkey - Top Headlines</h2>
         <div className="row row-gap-5 mt-5">
@@ -141,6 +166,15 @@ export class News extends Component {
             </button>
           </Link>
         </div>
+      </div>
+    ) : (
+      <div className="container">
+        <h1
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: '95vh' }}
+        >
+          API Limit Exceed
+        </h1>
       </div>
     );
   }
