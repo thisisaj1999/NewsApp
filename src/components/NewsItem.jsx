@@ -7,14 +7,14 @@ export class NewsItem extends Component {
     return (
       <div>
         <div className="card" style={{ width: '20rem' }}>
-          <img src={imageUrl} className="card-img-top" alt="..." height="195"/>
+          <img src={imageUrl} className="card-img-top" alt="..." height="195" />
           <div className="card-body">
             <h5 className="card-title">{title} ...</h5>
             <p className="card-text">{description} ...</p>
-            {/* <a href="/newsDetails" className="btn btn-sm btn-primary"> */}
             <a
               href={newsUrl}
               target="_blank"
+              rel="noreferrer"
               className="btn btn-sm btn-primary"
             >
               Read More

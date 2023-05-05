@@ -19,6 +19,7 @@ export class News extends Component {
       country: param[0] === 'country' ? param[1] : 'in',
       category: param[0] === 'category' ? param[1] : false,
       error: null,
+      status: 'idle',
     };
   }
 
@@ -105,8 +106,7 @@ export class News extends Component {
   };
 
   render() {
-    console.log(this.state.articles);
-    return this.state.articles.length > 0 ? (
+    return this.state.error === null ? (
       <div className="container mt-5 " id="myElement">
         <h2 className="pt-5">NewsMonkey - Top Headlines</h2>
         <div className="row row-gap-5 mt-5">
@@ -141,7 +141,7 @@ export class News extends Component {
               disabled={this.state.page <= 1}
               onClick={this.handlePrevClick}
               type="button"
-              class="btn btn-primary "
+              className="btn btn-primary "
             >
               Prev
             </button>
@@ -160,7 +160,7 @@ export class News extends Component {
               }
               onClick={this.handleNextClick}
               type="button"
-              class="btn btn-primary"
+              className="btn btn-primary"
             >
               Next
             </button>

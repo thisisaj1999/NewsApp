@@ -4,8 +4,8 @@ import codeData from '../assets/codes.json';
 export class Navbar extends Component {
   static propTypes = {};
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     let categoryArr = [
       'Business',
       'Entertainment',
@@ -28,11 +28,10 @@ export class Navbar extends Component {
   };
 
   render() {
-    console.log(this.state.countryData);
     return (
       <nav className="navbar navbar-expand-lg position-fixed z-1 top-0 start-0 end-0 bg-body-tertiary">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/">
             News Monkey
           </a>
           <button
@@ -57,49 +56,52 @@ export class Navbar extends Component {
                 </a>
               </li>
 
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
+              <li className="nav-item dropdown">
+                <button
+                  className="nav-link dropdown-toggle"
                   id="navbarDropdownMenuLink"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
                   Categories
-                </a>
+                </button>
                 <div
-                  class="dropdown-menu"
+                  className="dropdown-menu"
                   aria-labelledby="navbarDropdownMenuLink"
                 >
-                  {this.state.categoryData.map((item) => (
+                  {this.state.categoryData.map((item, idx) => (
                     <a
-                      class="dropdown-item"
+                      className="dropdown-item"
                       href={`/category=${item.toLowerCase()}`}
+                      key={`${item}_${idx}`}
                     >
                       {item}
                     </a>
                   ))}
                 </div>
               </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
+              <li className="nav-item dropdown">
+                <button
+                  className="nav-link dropdown-toggle"
                   id="navbarDropdownMenuLink"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="false"
                 >
                   Countries
-                </a>
+                </button>
                 <div
-                  class="dropdown-menu overflow-y-auto"
+                  className="dropdown-menu overflow-y-auto"
                   aria-labelledby="navbarDropdownMenuLink"
                   style={{ height: '20rem' }}
                 >
-                  {this.state.countryData.map((item) => (
-                    <a class="dropdown-item" href={`/country=${item.code}`}>
+                  {this.state.countryData.map((item, idx) => (
+                    <a
+                      className="dropdown-item"
+                      href={`/country=${item.code}`}
+                      key={`${item}_${idx}`}
+                    >
                       {item.country}
                     </a>
                   ))}
