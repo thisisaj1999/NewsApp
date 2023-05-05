@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import NewsItem from './NewsItem';
 import ImgPlaceholder from '../assets/imgplaceholder.webp';
 import { Link } from 'react-scroll';
-import { withRouter } from 'react-router';
 
 export class News extends Component {
   articles = [];
+  apiKey = process.env.REACT_APP_API_KEY;
 
   constructor() {
     super();
@@ -23,8 +23,8 @@ export class News extends Component {
 
   async componentDidMount() {
     let url = this.state.category
-      ? `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=947c4f3b7df64a189d1126b1c45cb472&pageSize=21&page=1`
-      : `https://newsapi.org/v2/top-headlines?country=${this.state.country}&apiKey=947c4f3b7df64a189d1126b1c45cb472&pageSize=21&page=1`;
+      ? `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=${this.apiKey}&pageSize=21&page=1`
+      : `https://newsapi.org/v2/top-headlines?country=${this.state.country}&apiKey=${this.apiKey}&pageSize=21&page=1`;
     let data = await fetch(url);
     let parsedData = await data.json();
     console.log(url);
@@ -42,16 +42,12 @@ export class News extends Component {
     let url = this.state.category
       ? `https://newsapi.org/v2/top-headlines?country=${
           this.state.country
-        }&category=${
-          this.state.category
-        }&apiKey=947c4f3b7df64a189d1126b1c45cb472&pageSize=21&page=${
-          this.state.page - 1
-        }`
+        }&category=${this.state.category}&apiKey=${
+          this.apiKey
+        }&pageSize=21&page=${this.state.page - 1}`
       : `https://newsapi.org/v2/top-headlines?country=${
           this.state.country
-        }&apiKey=947c4f3b7df64a189d1126b1c45cb472&pageSize=21&page=${
-          this.state.page - 1
-        }`;
+        }&apiKey=${this.apiKey}&pageSize=21&page=${this.state.page - 1}`;
 
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -67,16 +63,12 @@ export class News extends Component {
       let url = this.state.category
         ? `https://newsapi.org/v2/top-headlines?country=${
             this.state.country
-          }&category=${
-            this.state.category
-          }&apiKey=947c4f3b7df64a189d1126b1c45cb472&pageSize=21&page=${
-            this.state.page + 1
-          }`
+          }&category=${this.state.category}&apiKey=${
+            this.apiKey
+          }&pageSize=21&page=${this.state.page + 1}`
         : `https://newsapi.org/v2/top-headlines?country=${
             this.state.country
-          }&apiKey=947c4f3b7df64a189d1126b1c45cb472&pageSize=21&page=${
-            this.state.page + 1
-          }`;
+          }&apiKey=${this.apiKey}&pageSize=21&page=${this.state.page + 1}`;
 
       let data = await fetch(url);
       let parsedData = await data.json();
@@ -89,9 +81,6 @@ export class News extends Component {
   };
 
   render() {
-    // const studentId = window.;
-    // console.log(studentId);
-
     return (
       <div className="container mt-5 " id="myElement">
         <h2 className="pt-5">NewsMonkey - Top Headlines</h2>
@@ -114,6 +103,7 @@ export class News extends Component {
             </div>
           ))}
         </div>
+
         <div className="container my-5 d-flex justify-content-between">
           <Link
             activeClass="active"
