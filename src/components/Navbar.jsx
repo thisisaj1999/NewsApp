@@ -18,7 +18,7 @@ export class Navbar extends Component {
     this.state = {
       showMenu: false,
       countryData: codeData,
-      currentCode: 'in',
+      // currentCode: 'in',
       categoryData: categoryArr,
     };
   }
@@ -28,6 +28,14 @@ export class Navbar extends Component {
   };
 
   render() {
+    const { currentCode } = this.props;
+
+    // handleCountryCodeData = (data) => {
+    //   // this.setState({
+    //   //   currentCode: data,
+    //   // });
+    //   return data;
+    // };
     return (
       <nav className="navbar navbar-expand-lg position-fixed z-1 top-0 start-0 end-0 bg-body-tertiary">
         <div className="container-fluid">
@@ -99,8 +107,11 @@ export class Navbar extends Component {
                   {this.state.countryData.map((item, idx) => (
                     <a
                       className="dropdown-item"
-                      href={`/country=${item.code}`}
+                      style={{ cursor: 'pointer' }}
                       key={`${item}_${idx}`}
+                      onClick={() => {
+                        currentCode(item.code);
+                      }}
                     >
                       {item.country}
                     </a>

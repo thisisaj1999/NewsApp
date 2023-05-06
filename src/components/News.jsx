@@ -7,8 +7,8 @@ export class News extends Component {
   articles = [];
   apiKey = process.env.REACT_APP_API_KEY;
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     let url = window.location.href.split('/')[3];
     let param = url.split('=');
 
@@ -16,14 +16,16 @@ export class News extends Component {
       articles: this.articles,
       loading: false,
       page: 1,
-      country: param[0] === 'country' ? param[1] : 'in',
+      country: this.props.countryCode,
       category: param[0] === 'category' ? param[1] : false,
       error: null,
       status: 'idle',
     };
+
+    console.log(this.state.country);
   }
 
-  async componentDidMount() {
+  fetchData = async () => {
     let url = this.state.category
       ? `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=${this.apiKey}&pageSize=21&page=1`
       : `https://newsapi.org/v2/top-headlines?country=${this.state.country}&apiKey=${this.apiKey}&pageSize=21&page=1`;
@@ -37,11 +39,22 @@ export class News extends Component {
       });
     } else {
       let parsedData = await data.json();
+      console.log(parsedData);
       this.setState({
         articles: parsedData.articles,
         totalArticles: parsedData.totalResults,
       });
     }
+  };
+
+  componentDidUpdate(prevProps) {
+    if (this.props.countryCode !== prevProps.countryCode) {
+      this.fetchData();
+    }
+  }
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   handleDropdownClick = () => {
