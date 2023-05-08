@@ -19,11 +19,10 @@ export class App extends Component {
   };
 
   render() {
-    console.log(this.state.countryCode, "countryCode");
     return (
       <>
         <NavBar currentCode={this.handleCountryCode} />
-        <News countryCode = {this.state.countryCode}/>
+        <News countryCode={this.state.countryCode} />
       </>
     );
   }

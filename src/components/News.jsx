@@ -16,19 +16,16 @@ export class News extends Component {
       articles: this.articles,
       loading: false,
       page: 1,
-      country: this.props.countryCode,
       category: param[0] === 'category' ? param[1] : false,
       error: null,
       status: 'idle',
     };
-
-    console.log(this.state.country);
   }
 
   fetchData = async () => {
     let url = this.state.category
-      ? `https://newsapi.org/v2/top-headlines?country=${this.state.country}&category=${this.state.category}&apiKey=${this.apiKey}&pageSize=21&page=1`
-      : `https://newsapi.org/v2/top-headlines?country=${this.state.country}&apiKey=${this.apiKey}&pageSize=21&page=1`;
+      ? `https://newsapi.org/v2/top-headlines?country=${this.props.countryCode}&category=${this.state.category}&apiKey=${this.apiKey}&pageSize=21&page=1`
+      : `https://newsapi.org/v2/top-headlines?country=${this.props.countryCode}&apiKey=${this.apiKey}&pageSize=21&page=1`;
 
     let data = await fetch(url);
     let code = data.status;
@@ -39,7 +36,7 @@ export class News extends Component {
       });
     } else {
       let parsedData = await data.json();
-      console.log(parsedData);
+
       this.setState({
         articles: parsedData.articles,
         totalArticles: parsedData.totalResults,
@@ -64,12 +61,12 @@ export class News extends Component {
   handlePrevClick = async () => {
     let url = this.state.category
       ? `https://newsapi.org/v2/top-headlines?country=${
-          this.state.country
+          this.props.countryCode
         }&category=${this.state.category}&apiKey=${
           this.apiKey
         }&pageSize=21&page=${this.state.page - 1}`
       : `https://newsapi.org/v2/top-headlines?country=${
-          this.state.country
+          this.props.countryCode
         }&apiKey=${this.apiKey}&pageSize=21&page=${this.state.page - 1}`;
 
     let data = await fetch(url);
@@ -93,12 +90,12 @@ export class News extends Component {
     } else {
       let url = this.state.category
         ? `https://newsapi.org/v2/top-headlines?country=${
-            this.state.country
+            this.props.countryCode
           }&category=${this.state.category}&apiKey=${
             this.apiKey
           }&pageSize=21&page=${this.state.page + 1}`
         : `https://newsapi.org/v2/top-headlines?country=${
-            this.state.country
+            this.props.countryCode
           }&apiKey=${this.apiKey}&pageSize=21&page=${this.state.page + 1}`;
 
       let data = await fetch(url);
